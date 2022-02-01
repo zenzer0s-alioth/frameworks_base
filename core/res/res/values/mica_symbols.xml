@@ -41,4 +41,8 @@
     <java-symbol type="string" name="battery_share_disabled_power_saver" />
     <java-symbol type="string" name="battery_share_disabled_low_battery" />
     <java-symbol type="drawable" name="ic_qs_powershare" />
+
+     <!-- App lock -->
+   <java-symbol type="string" name="unlock_application" />
+   <java-symbol type="array" name="config_appLockAllowedSystemApps" />
 </resources>

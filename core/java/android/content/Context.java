@@ -52,6 +52,7 @@ import android.annotation.UiContext;
 import android.annotation.UserIdInt;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AppLockManager;
 import android.app.BroadcastOptions;
 import android.app.GameManager;
 import android.app.GrammaticalInflectionManager;
@@ -6937,6 +6938,14 @@ public abstract class Context {
     public static final String DISPLAY_HASH_SERVICE = "display_hash";
 
     /**
+     * {@link AppLockManager}.
+     *
+     * @see #getSystemService(String)
+     * @hide
+     */
+    public static final String APP_LOCK_SERVICE = "app_lock";
+
+    /**
      * Use with {@link #getSystemService(String)} to retrieve a
      * {@link android.app.LocaleManager}.
      *
@@ -6946,7 +6955,6 @@ public abstract class Context {
 
     /**
      * Use with {@link #getSystemService(String)} to retrieve a {@link
-     * android.safetycenter.SafetyCenterManager} instance for interacting with the safety center.
      *
      * @see #getSystemService(String)
      * @see android.safetycenter.SafetyCenterManager
