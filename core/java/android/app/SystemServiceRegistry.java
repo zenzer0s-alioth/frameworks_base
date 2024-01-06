@@ -315,6 +315,9 @@ import java.util.Objects;
 
 import vendor.lineage.powershare.IPowerShare;
 
+import com.android.internal.display.IRefreshRateManagerService;
+import com.android.internal.display.RefreshRateManager;
+
 /**
  * Manages all of the system services that can be returned by {@link Context#getSystemService}.
  * Used by {@link ContextImpl}.
@@ -1958,6 +1961,15 @@ public final class SystemServiceRegistry {
                         return new IntrusionDetectionManager(service);
                     }
                 });
+
+        registerService(Context.REFRESH_RATE_MANAGER_SERVICE, RefreshRateManager.class,
+                new CachedServiceFetcher<RefreshRateManager>() {
+            @Override
+            public RefreshRateManager createService(ContextImpl ctx) {
+                IBinder binder = ServiceManager.getService(Context.REFRESH_RATE_MANAGER_SERVICE);
+                IRefreshRateManagerService service = IRefreshRateManagerService.Stub.asInterface(binder);
+                return new RefreshRateManager(ctx.getOuterContext(), service);
+            }});
 
         if (interactiveChooser()) {
             registerService(
