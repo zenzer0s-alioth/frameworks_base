@@ -19,7 +19,11 @@ package com.android.internal.util.custom;
 import android.app.ActivityManager;
 import android.app.IActivityManager;
 import android.content.Context;
-import android.content.Context;
+import android.content.Intent;
+import android.content.om.OverlayManager;
+import android.content.om.OverlayManagerTransaction;
+import android.content.om.OverlayIdentifier;
+import android.content.om.OverlayInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -27,10 +31,16 @@ import android.os.AsyncTask;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.SystemProperties;
+import android.os.UserHandle;
+import android.util.Log;
+
+import com.android.internal.util.CollectionUtils;
 
 import java.util.List;
 
 public class Utils {
+
+    private static final String TAG = "Utils";
 
     public static void restartApp(String appName, Context context) {
         new RestartAppTask(appName, context).execute();
@@ -113,5 +123,60 @@ public class Utils {
             needsNav = true;
         }
         return needsNav;
+    }
+
+    public static String getDefaultLauncher(Context context) {
+        final RoleManager roleManager = context.getSystemService(RoleManager.class);
+        final String packageName = CollectionUtils.firstOrNull(
+                roleManager.getRoleHolders(RoleManager.ROLE_HOME));
+        return packageName != null ? packageName : "";
+    }
+
+    public static void forceStopDefaultLauncher(Context context) {
+        final ActivityManager activityManager = context.getSystemService(ActivityManager.class);
+        try {
+            activityManager.forceStopPackageAsUser(getDefaultLauncher(context), UserHandle.USER_CURRENT);
+        } catch (Exception ignored) {}
+    }
+
+    public static void toggleOverlay(Context context, String overlayName, boolean enable) {
+        OverlayManager overlayManager = context.getSystemService(OverlayManager.class);
+        if (overlayManager == null) {
+            Log.e(TAG, "OverlayManager is not available");
+            return;
+        }
+
+        OverlayIdentifier overlayId = getOverlayID(overlayManager, overlayName);
+        if (overlayId == null) {
+            Log.e(TAG, "Overlay ID not found for " + overlayName);
+            return;
+        }
+
+        OverlayManagerTransaction.Builder transaction = new OverlayManagerTransaction.Builder();
+        transaction.setEnabled(overlayId, enable, UserHandle.USER_CURRENT);
+
+        try {
+            overlayManager.commit(transaction.build());
+        } catch (Exception e) {
+            Log.e(TAG, "Error toggling overlay", e);
+        }
+    }
+
+    private static OverlayIdentifier getOverlayID(OverlayManager overlayManager, String name) {
+        try {
+            if (name.contains(":")) {
+                String[] parts = name.split(":");
+                List<OverlayInfo> infos = overlayManager.getOverlayInfosForTarget(parts[0], UserHandle.CURRENT);
+                for (OverlayInfo info : infos) {
+                    if (parts[1].equals(info.getOverlayName())) return info.getOverlayIdentifier();
+                }
+            } else {
+                OverlayInfo info = overlayManager.getOverlayInfo(name, UserHandle.CURRENT);
+                if (info != null) return info.getOverlayIdentifier();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error retrieving overlay ID", e);
+        }
+        return null;
     }
 }
