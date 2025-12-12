@@ -17,7 +17,9 @@
 package com.android.internal.util.custom;
 
 import android.app.ActivityManager;
+import android.app.ActivityThread;
 import android.app.IActivityManager;
+import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.om.OverlayManager;
