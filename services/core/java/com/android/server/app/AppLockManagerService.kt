@@ -911,9 +911,12 @@ class AppLockManagerService(
                 }
                 return false
             }
-            val isManaged = clearAndExecute {
-                userManagerInternal.isUserManaged(userId)
+            val isManaged: Boolean = clearAndExecute {
+            userManagerInternal.getUserInfo(userId)
+            ?.isManagedProfile
+            ?: false
             }
+
             if (isManaged) {
                 logD {
                     "User id $userId belongs to a work profile, ignoring requireUnlock"
