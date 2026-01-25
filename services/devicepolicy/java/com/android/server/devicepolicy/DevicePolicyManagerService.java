@@ -2320,7 +2320,6 @@ public class DevicePolicyManagerService extends IDevicePolicyManager.Stub {
                 injector.getPackageManagerInternal(),
                 injector.getActivityTaskManagerInternal(),
                 injector.getActivityManagerInternal(),
-                injector.getUserManagerInternal(),
                 mStateCache, pathProvider);
     }
 

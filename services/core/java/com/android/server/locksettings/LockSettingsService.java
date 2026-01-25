@@ -109,7 +109,6 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.os.storage.IStorageManager;
 import android.os.storage.StorageManager;
-import android.os.storage.StorageManagerInternal;
 import android.provider.DeviceConfig;
 import android.provider.Settings;
 import android.security.AndroidKeyStoreMaintenance;

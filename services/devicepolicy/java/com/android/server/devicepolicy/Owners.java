@@ -72,7 +72,6 @@ class Owners {
     private final PackageManagerInternal mPackageManagerInternal;
     private final ActivityTaskManagerInternal mActivityTaskManagerInternal;
     private final ActivityManagerInternal mActivityManagerInternal;
-    private final UserManagerInternal mUserManagerInternal;
     private final DeviceStateCacheImpl mDeviceStateCache;
 
     @GuardedBy("mData")
@@ -86,7 +85,6 @@ class Owners {
             PackageManagerInternal packageManagerInternal,
             ActivityTaskManagerInternal activityTaskManagerInternal,
             ActivityManagerInternal activityManagerInternal,
-            UserManagerInternal userManagerInternal,
             DeviceStateCacheImpl deviceStateCache,
             PolicyPathProvider pathProvider) {
         mUserManager = userManager;
@@ -94,7 +92,6 @@ class Owners {
         mPackageManagerInternal = packageManagerInternal;
         mActivityTaskManagerInternal = activityTaskManagerInternal;
         mActivityManagerInternal = activityManagerInternal;
-        mUserManagerInternal = userManagerInternal;
         mDeviceStateCache = deviceStateCache;
         mData = new OwnersData(pathProvider);
     }

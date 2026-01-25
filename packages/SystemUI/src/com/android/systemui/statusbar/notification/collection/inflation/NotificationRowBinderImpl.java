@@ -55,6 +55,7 @@ import com.android.systemui.statusbar.notification.row.RowContentBindStage;
 import com.android.systemui.statusbar.notification.row.RowInflaterTask;
 import com.android.systemui.statusbar.notification.row.dagger.ExpandableNotificationRowComponent;
 import com.android.systemui.statusbar.notification.row.shared.AsyncGroupHeaderViewInflation;
+import com.android.systemui.statusbar.notification.row.shared.LockscreenOtpRedaction;
 import com.android.systemui.statusbar.notification.stack.NotificationListContainer;
 
 import javax.inject.Inject;
